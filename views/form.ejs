@@ -1,0 +1,37 @@
+<%- include('./base/header') %>
+
+<div class="container-fluid" id="form-container">
+    <div class="row">
+        <div class="col">
+            <h1>Fill Form</h1>
+        </div>
+    </div>
+    <form action="/form" method="post">
+        <div class="row">
+            <div class="col-sm-6">
+                <label for="fname">First Name: </label><input type="text" placeholder="First Name" name="fname" required id="fname">
+            </div>
+            <div class="col-sm-6">
+                <label for="lname">Last Name: </label><input type="text" placeholder="Last Name" name="lname"  required id="lname">
+            </div>
+            <div class="col-lg-6">
+
+                <label for="address">Address: </label><textarea name="address" required id="address" cols="30" rows="3"></textarea>
+            </div>
+            <div class="col-md-6"><label for="email">Email: </label><input type="email" required id="email" name="email"
+                                                                           placeholder="Email">
+            </div>
+            <div class="col-md-6"><label for="pnumber">Phone Number: </label><input type="number" required id="pnumber"
+                                                                                    name="pnumber"
+                                                                                    placeholder="Phone number"></div>
+            <div class="col-md-6"><label for="atime">Arrival Time: </label><input type="datetime-local" name="atime"
+                                                                                  placeholder="Arrival time" required id="atime">
+            </div>
+            <div class="col-sm-12">
+                <button type="submit" class="btn btn-outline-dark btn-lg btn-block">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<%- include('./base/footer') %>

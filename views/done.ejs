@@ -1,0 +1,44 @@
+<%- include('base/header') %>
+<h1>Checked In</h1>
+<div class="table-responsive-lg" id="res-table">
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone No.</th>
+            <th scope="col">Arrival Time</th>
+            <th scope="col">Arrival Date</th>
+            <th scope="col">Departure Time</th>
+            <th scope="col">Departure Time</th>
+            <th scope="col">Departure</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% if (data!=undefined){ %>
+            <% for(var i = 0;i < data.length ;i++) { %>
+            <tr>
+
+                <th scope="row"><%= i+1 %></th>
+                <td><%= data[i].first_name %></td>
+                <td><%= data[i].last_name %></td>
+                <td><%= data[i].email %></td>
+                <td><%= data[i].phone_number %></td>
+                <td><%= data[i].arrival_time %></td>
+                <td><%= data[i].arrival_date %></td>
+                <td><%= data[i].departure_time %></td>
+                <td   ><%= data[i].departure_date %></td>
+                <td style="width: auto" >
+                    <form action="/done/<%= data[i].email %>?_method=DELETE" method="post">
+                        <button type="submit" class="btn btn-outline-danger" style="width: 90%">Click</button>
+                    </form>
+                </td>
+            </tr>
+            <% } %>
+        <% } %>
+        </tbody>
+    </table>
+</div>
+<%- include('base/footer') %>
