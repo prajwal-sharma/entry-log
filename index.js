@@ -1,6 +1,11 @@
 const express = require('express')
 const app = express()
 const path = require('path')
+const nodemailer = require('nodemailer');
+const email_config = require('./emailconfig')
+const Email = require('email-templates');
+// console.log(email_config.email)
+
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 app.use(express.json())
@@ -20,6 +25,30 @@ mongoose.connect('mongodb://localhost:27017/entry-app').then(() => {
     console.log(err)
 })
 
+
+// START EMAIL
+const transporter = nodemailer.createTransport({
+    service:'gmail',
+    // host: 'smtp.mailtrap.io',
+    // port: 465,
+    // secure: false,
+    auth: {
+        user: email_config.email,
+        pass: email_config.password
+    }
+});
+const email = new Email({
+    views: {
+        root: "./views/templates/",
+        options: {extension: 'ejs',}
+    },
+    from: email_config.from,
+    send: true,
+    preview: false,
+    transport: transporter,
+});
+
+// START SCHEMA
 const formSchema = new mongoose.Schema({
     first_name: String,
     last_name: String,
@@ -53,11 +82,11 @@ const deplog = mongoose.model('deplog', depSchema)
 
 // LOGIC
 app.get('/', function (req, res) {
-    res.render('home',{title:"Home"})
+    res.render('home', {title: "Home"})
 })
 //GET FORM
 app.get('/form', function (req, res) {
-    res.render('form',{title:"Register"})
+    res.render('form', {title: "Register"})
 })
 //POST FORM
 app.post('/form', function (req, res) {
@@ -77,6 +106,21 @@ app.post('/form', function (req, res) {
         departure_date: null,
         is_inside: true
     })
+    // console.log(email.config.views)
+    email.send({
+        template: 'checked-in',
+        message:{
+            to : formData.email,
+        },
+        locals:{
+            name:formData.fname+" " +formData.lname,
+        }
+    }).then(()=>{
+        console.log("Email Send")
+    }).catch((err)=>{
+        console.log(err)
+    })
+
     new_log.save().then(() => {
         // console.log(typeof(adate),typeof(atime))
         console.log("new log added")
@@ -100,23 +144,23 @@ app.get('/done', function (req, res) {
             if (foundData.length === 0) {
                 var all_data = null;
                 console.log("NO DATA")
-                res.render('done', {data: all_data,title:"Checked In"})
+                res.render('done', {data: all_data, title: "Checked In"})
             } else {
                 all_data = foundData
                 // console.log(all_data)
                 // console.log(foundData[0].first_name, foundData.length)
-                res.render('done', {data: foundData,title:"Checked In"})
+                res.render('done', {data: foundData, title: "Checked In"})
             }
         }
     });
 })
 app.delete('/done/:email', function (req, res) {
     const {email: user_email} = req.params;
-    log.findOneAndRemove({email:user_email}, function (err, data) {
-        if (!err){
+    log.findOneAndRemove({email: user_email}, function (err, data) {
+        if (!err) {
             let today = new Date();
-                let ddate = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-                let dtime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            let ddate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+            let dtime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
             const new_log = new deplog({
                 first_name: data.first_name,
@@ -129,6 +173,19 @@ app.delete('/done/:email', function (req, res) {
                 departure_time: dtime,
                 departure_date: ddate,
                 is_inside: false
+            })
+            email.send({
+                template: 'checked-out',
+                message:{
+                    to : data.email,
+                },
+                locals:{
+                    name:data.first_name+" " +data.last_name,
+                }
+            }).then(()=>{
+                console.log("Email Send Check out")
+            }).catch((err)=>{
+                console.log(err)
             })
             new_log.save().then(() => {
                 console.log("new departure log added")
@@ -154,12 +211,12 @@ app.get('/checked-out', function (req, res) {
             if (foundData.length === 0) {
                 var all_data = [];
                 console.log("NO DATA")
-                res.render('checked-out', {data: all_data,title:"Checked Out"})
+                res.render('checked-out', {data: all_data, title: "Checked Out"})
             } else {
                 all_data = foundData
-                console.log(all_data)
+                // console.log(all_data)
                 console.log(foundData[0].first_name, foundData.length)
-                res.render('checked-out', {data: foundData,title:"Checked Out"})
+                res.render('checked-out', {data: foundData, title: "Checked Out"})
             }
         }
     });
@@ -167,23 +224,23 @@ app.get('/checked-out', function (req, res) {
 
 //SEARCH
 
-app.post('/search/:type',function (req,res) {
+app.post('/search/:type', function (req, res) {
     const {search_email} = req.body
     const {type} = req.params
-    console.log(search_email,type)
-    if(type ==='Checked Out'){
+    console.log(search_email, type)
+    if (type === 'Checked Out') {
         console.log("Its check out")
-        deplog.find({email:search_email},function (err,foundData) {
+        deplog.find({email: search_email}, function (err, foundData) {
             console.log(foundData)
-            res.render('filter_checkout',{data:foundData,title:"Checked Out Search"})
+            res.render('filter_checkout', {data: foundData, title: "Checked Out Search"})
 
         })
 
-    }else if(type==='Checked In'){
+    } else if (type === 'Checked In') {
         console.log("Its checked in type")
-        log.find({email:search_email},function (err,foundData) {
+        log.find({email: search_email}, function (err, foundData) {
             console.log(foundData)
-            res.render('filter_checkin',{data:foundData,title:"Checked In Search"})
+            res.render('filter_checkin', {data: foundData, title: "Checked In Search"})
 
         })
     }
