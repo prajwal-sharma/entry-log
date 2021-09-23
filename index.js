@@ -4,6 +4,7 @@ const path = require('path')
 const nodemailer = require('nodemailer');
 const email_config = require('./emailconfig')
 const Email = require('email-templates');
+const port = process.env.PORT || 8000;
 // console.log(email_config.email)
 
 app.set('view engine', 'ejs')
@@ -245,7 +246,7 @@ app.post('/search/:type', function (req, res) {
         })
     }
 })
-app.listen(3000, function () {
-    console.log("Server Running")
+app.listen(port, function () {
+    console.log("Server Running at port: "+ port)
 
 })
