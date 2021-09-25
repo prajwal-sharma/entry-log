@@ -5,6 +5,7 @@ const nodemailer = require('nodemailer');
 const email_config = require('./emailconfig')
 const Email = require('email-templates');
 const port = process.env.PORT || 8000;
+var moment = require('moment-timezone');
 // console.log(email_config.email)
 
 app.set('view engine', 'ejs')
@@ -82,6 +83,8 @@ const deplog = mongoose.model('deplog', depSchema)
 
 
 // LOGIC
+const dateTime = moment().tz("Asia/Kolkata").format().split('+')
+
 app.get('/', function (req, res) {
     res.render('home', {title: "Home"})
 })
@@ -159,10 +162,8 @@ app.delete('/done/:email', function (req, res) {
     const {email: user_email} = req.params;
     log.findOneAndRemove({email: user_email}, function (err, data) {
         if (!err) {
-            let today = new Date();
-            let ddate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-            let dtime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-
+            let time= dateTime[0].split('T')
+            console.log(time)
             const new_log = new deplog({
                 first_name: data.first_name,
                 last_name: data.last_name,
@@ -171,8 +172,8 @@ app.delete('/done/:email', function (req, res) {
                 phone_number: data.phone_number,
                 arrival_time: data.arrival_time,
                 arrival_date: data.arrival_date,
-                departure_time: dtime,
-                departure_date: ddate,
+                departure_time: time[1],
+                departure_date: time[0],
                 is_inside: false
             })
             email.send({
