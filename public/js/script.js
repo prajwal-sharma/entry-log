@@ -8,8 +8,15 @@ let ISTTime = new Date(currentTime.getTime() + (ISTOffset + currentOffset) * 600
 
 // ISTTime now represents the time in IST coordinates
 
-let hoursIST = ISTTime.getHours()
-let minutesIST = ISTTime.getMinutes()
-let inp = document.getElementById('#atime')
-inp.value=ISTTime
-console.log(hoursIST + ":" + minutesIST + " ")
+// let hoursIST = ISTTime.getHours()
+// let minutesIST = ISTTime.getMinutes()
+// let inp = document.getElementById('#atime')
+// // inp.value=ISTTime
+// console.log(hoursIST + ":" + minutesIST + " ")
+$('#close-button-done').click(function () {
+    $('#id-done').fadeOut("slow");
+})
+
+$('#close-button-cout').click(function () {
+    $('#id-cout').fadeOut("slow");
+})

@@ -1,5 +1,11 @@
 <%- include('base/header') %>
 <h1>Checked In</h1>
+<div id="id-done" class="alert alert-success text-center alert-dismissible fade show" role="alert">
+    <strong>Mail Sent!</strong>  <i class="fa fa-check-circle"></i> &nbsp;You should <strong>check your mail</strong> and if if not there <strong>check spam</strong>.
+    <button id = "close-button-done" type="button" class="btn" data-dismiss="alert" >
+       &times;
+    </button>
+</div>
 <div class="table-responsive-lg" id="res-table">
     <table class="table table-hover table-bordered">
         <thead>
@@ -41,4 +47,7 @@
         </tbody>
     </table>
 </div>
+<script>
+
+</script>
 <%- include('base/footer') %>
