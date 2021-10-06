@@ -1,5 +1,5 @@
 <%- include('base/header') %>
-<h1>Checked In</h1>
+<h1 style="color: #03A9F4 ;text-shadow: #2d2a2a 2px 2px 2px">Checked In</h1>
 <div id="id-done" class="alert alert-success text-center alert-dismissible fade show" role="alert">
     <strong>Mail Sent!</strong>  <i class="fa fa-check-circle"></i> &nbsp;You should <strong>check your mail</strong> and if it's not there <strong>check spam</strong>.
     <button id = "close-button-done" type="button" class="btn" data-dismiss="alert" >
@@ -14,7 +14,7 @@
             <th scope="col">First Name</th>
             <th scope="col">Last Name</th>
             <th scope="col">Email</th>
-            <th scope="col">Phone No.</th>
+<!--            <th scope="col">Phone No.</th>-->
             <th scope="col">Arrival Time</th>
             <th scope="col">Arrival Date</th>
             <th scope="col">Departure Time</th>
@@ -31,14 +31,14 @@
                 <td><%= data[i].first_name %></td>
                 <td><%= data[i].last_name %></td>
                 <td><%= data[i].email %></td>
-                <td><%= data[i].phone_number %></td>
+<!--                <td><%= data[i].phone_number %></td>-->
                 <td><%= data[i].arrival_time %></td>
                 <td><%= data[i].arrival_date %></td>
                 <td><%= data[i].departure_time %></td>
                 <td   ><%= data[i].departure_date %></td>
                 <td style="width: auto" >
                     <form action="/done/<%= data[i].email %>?_method=DELETE" method="post">
-                        <button type="submit" class="btn btn-outline-danger" style="width: 90%">Click</button>
+                        <button type="submit" class="btn btn-outline-light" style="width: 90%">Click</button>
                     </form>
                 </td>
             </tr>
