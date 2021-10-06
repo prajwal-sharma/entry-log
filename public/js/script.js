@@ -20,3 +20,19 @@ $('#close-button-done').click(function () {
 $('#close-button-cout').click(function () {
     $('#id-cout').fadeOut("slow");
 })
+
+function resize() {
+    if ($(window).width() < 975) {
+        $('i').addClass('fa-3x');
+        $('i').addClass('add-spacing')
+    }
+    else {
+        $('i').removeClass('fa-3x');
+        $('i').removeClass('add-spacing')
+    }
+}
+
+$(document).ready( function() {
+    $(window).resize(resize);
+    resize();
+});

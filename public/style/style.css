@@ -74,10 +74,23 @@ h1{
     text-shadow:  1px 1px 2px #a9e4f3;
     font-size: 1.3rem;
     font-weight: 900;
+    background: rgba(164, 220, 217, 0.6);
 }
 
 /*NAV*/
 
 nav a{
     font-size: 1.88rem;
+}
+
+@media (max-width: 470px){
+    #submit-depart{
+        width: 30%;
+        font-size: .7rem;
+    }
+}
+
+
+.add-spacing{
+    margin: 10px 0;
 }
