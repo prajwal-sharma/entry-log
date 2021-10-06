@@ -23,7 +23,7 @@ $('#close-button-cout').click(function () {
 
 function resize() {
     if ($(window).width() < 975) {
-        $('i').addClass('fa-4x');
+        $('i').addClass('fa-3x');
         $('i').addClass('add-spacing')
     }
     else {
